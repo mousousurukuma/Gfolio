@@ -1,27 +1,35 @@
-// src/components/Sidebar.tsx
-const Sidebar = () => {
+import React from "react"
+
+interface SidebarProps {
+  isOpen: boolean
+  onClose: () => void
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   return (
-    <aside className="bg-gray-800 fixed top-14 left-2 bottom-2 w-64 p-4 mt-2 rounded-lg rounded-b-lg z-40">
-      <nav>
-        <ul className="space-y-4">
-          <li className="bg-gray-600 p-2 rounded hover:bg-gray-500 transition">
-            <a href="#" className="text-white">
-              Sample Item 1
-            </a>
-          </li>
-          <li className="bg-gray-600 p-2 rounded hover:bg-gray-500 transition">
-            <a href="#" className="text-white">
-              Sample Item 2
-            </a>
-          </li>
-          <li className="bg-gray-600 p-2 rounded hover:bg-gray-500 transition">
-            <a href="#" className="text-white">
-              Sample Item 3
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </aside>
+    <>
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
+          onClick={onClose}
+        ></div>
+      )}
+      <div
+        className={`fixed top-0 left-0 h-full z-40 w-64 bg-gray-700 overflow-y-auto transition-transform duration-300 ease-in-out transform ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        } md:translate-x-0 md:top-16 md:h-[calc(100vh-4rem)]`}
+      >
+        <div className="p-4 text-white">
+          <h2 className="text-lg font-semibold">Friends</h2>
+          {/* プレースホルダー */}
+          <div className="mt-4 space-y-4">
+            <div className="w-full h-12 bg-gray-600 rounded"></div>
+            <div className="w-full h-12 bg-gray-600 rounded"></div>
+            <div className="w-full h-12 bg-gray-600 rounded"></div>
+          </div>
+        </div>
+      </div>
+    </>
   )
 }
 

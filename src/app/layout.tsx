@@ -1,19 +1,20 @@
-// src/app/layout.tsx
-import Header from "../components/Header"
-import Sidebar from "../components/Sidebar"
 import "./globals.css"
+import Header from "@/components/Header"
+import Sidebar from "@/components/Sidebar"
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export const metadata = {
+  title: "Gfolio",
+  description: "Gfolio Portfolio and Tracker",
+}
+
+export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="bg-black">
-        <Header />
+      <body className="bg-gray-900 text-white">
         <Sidebar />
-        <main className="ml-64 pt-16 p-4 mx-2 my-2">{children}</main>
+
+        <Header />
+        <main className="ml-64 mt-16 p-4">{children}</main>
       </body>
     </html>
   )
