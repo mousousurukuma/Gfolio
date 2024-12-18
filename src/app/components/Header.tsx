@@ -3,20 +3,30 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { getAuth, signInWithPopup, GoogleAuthProvider, TwitterAuthProvider, signOut } from 'firebase/auth';
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { app } from '../firebase';
 
 const Header: React.FC = () => {
   const [user, setUser] = useState<any>(null);
+  const [customId, setCustomId] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [showLogout, setShowLogout] = useState(false);
   const auth = getAuth(app);
+  const db = getFirestore(app);
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
       setUser(user);
+      if (user) {
+        const docRef = doc(db, 'users', user.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setCustomId(docSnap.data().id);
+        }
+      }
     });
     return () => unsubscribe();
-  }, [auth]);
+  }, [auth, db]);
 
   const handleLogin = async (provider: 'google' | 'twitter') => {
     const providerInstance = provider === 'google' ? new GoogleAuthProvider() : new TwitterAuthProvider();
@@ -78,6 +88,9 @@ const Header: React.FC = () => {
               </div>
             )}
           </div>
+        )}
+        {user && customId && (
+          <Link href={`/p/${customId}`} className="text-white">My Page</Link>
         )}
       </div>
     </header>
